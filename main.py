@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 # --- FastAPI & Pydantic Imports ---
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
@@ -76,7 +77,13 @@ app = FastAPI(
     title="Helm Wellness API",
     description="Backend for the Helm digital wellbeing app, featuring Personalized RAG and Sentiment Analysis."
 )
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows ALL connections (Localhost, Vercel, etc.)
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods (POST, GET, PUT, etc.)
+    allow_headers=["*"],  # Allows all headers
+)
 # --- Load RAG Vector DB ---
 DB_PATH = "./chroma_db"
 rag_chain = None
